@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    "baseUrl": "packages",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "./dist/",
+    "removeComments": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es6",
+    "skipLibCheck": true,
+    "paths": {
+      "App/*": ["ui/App/*"],
+      "assets/*": ["/ui/assets/*"],
+      "services/*": ["ui/services/*"],
+      "utils/*": ["ui/utils/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

@@ -105,3 +105,4 @@ dist
 
 # mock DB
 tools/db.json
+/packages/storage/db.json

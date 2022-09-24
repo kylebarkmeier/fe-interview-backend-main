@@ -15,6 +15,7 @@ const paths = {
   public: path.resolve('packages/ui/assets/public'),
   ui: path.resolve('packages/ui'),
   build: path.resolve('dist'),
+  globals: path.resolve('packages/ui/globals.ts'),
   App: path.resolve('packages/ui/index.tsx'),
 };
 
@@ -27,7 +28,7 @@ module.exports = function (_, webpackEnv) {
 
   return {
     target: 'web',
-    entry: ['@fontsource/nunito', '@fontsource/dosis', paths.App],
+    entry: ['@fontsource/nunito', paths.globals, paths.App],
     output: {
       path: paths.build,
       filename: isDevelopment
@@ -191,7 +192,12 @@ module.exports = function (_, webpackEnv) {
       }),
       new FaviconsWebpackPlugin('packages/ui/assets/favicon.ico'),
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(webpackEnv.mode),
+        process: {
+          env: {
+            NODE_ENV: JSON.stringify(webpackEnv.mode),
+            MAPBOX_API_KEY: JSON.stringify(process.env.MAPBOX_API_KEY),
+          },
+        },
       }),
       new ESLintPlugin(),
     ].filter(Boolean),

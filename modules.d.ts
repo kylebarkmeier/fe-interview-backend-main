@@ -25,6 +25,16 @@ declare module '@mui/material/styles' {
           };
         };
       };
+      MuiOutlinedInput: {
+        defaultProps: {
+          variant: string;
+        };
+        styleOverrides: {
+          notchedOutline: {
+            borderColor: string;
+          };
+        };
+      };
       MuiTypography: {
         styleOverrides: {
           root: {
@@ -47,6 +57,16 @@ declare module '@mui/material/styles' {
         styleOverrides: {
           root: {
             textTransform: string;
+          };
+        };
+      };
+      MuiOutlinedInput: {
+        defaultProps: {
+          variant: string;
+        };
+        styleOverrides: {
+          notchedOutline: {
+            borderColor: string;
           };
         };
       };

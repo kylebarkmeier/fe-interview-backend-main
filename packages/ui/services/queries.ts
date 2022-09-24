@@ -18,8 +18,11 @@ export const api = createApi({
   }),
   tagTypes: ['Company'],
   endpoints: (builder) => ({
-    companies: builder.query<Company[], SearchParameters>({
-      query: ({ id, ...params }) => ({ url: `search/${id}`, params }),
+    companies: builder.query<Company[], SearchParameters | void>({
+      query: ({ id, ...params } = {}) => ({
+        url: `search/${id || ''}`,
+        params,
+      }),
       providesTags: (result = []) => [
         { type: 'Company', id: 'LIST' },
         ...result.map(({ id }) => ({

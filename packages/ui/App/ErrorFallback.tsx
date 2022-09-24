@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 
 const ErrorFallback = ({
   error,
@@ -6,7 +6,7 @@ const ErrorFallback = ({
 }: {
   error: Error;
   resetErrorBoundary: () => void;
-}) => {
+}): JSX.Element => {
   return (
     <Container role="alert">
       <Grid
@@ -16,8 +16,8 @@ const ErrorFallback = ({
         alignItems="center"
         justifyContent="center"
       >
-        <p>Something went wrong:</p>
-        <pre>{error.message}</pre>
+        <Typography>Something went wrong:</Typography>
+        <Typography component="code">{error.message}</Typography>
         <button onClick={resetErrorBoundary}>Try again</button>
       </Grid>
     </Container>

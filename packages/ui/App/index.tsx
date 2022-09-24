@@ -1,26 +1,10 @@
-import { Container, Toolbar, Typography } from '@mui/material';
-import ShoppingList from 'App/List';
+import SearchBar from 'App/SearchBar';
+import ResultGrid from 'App/ResultGrid';
 
-const App = () => (
+const App = (): JSX.Element => (
   <>
-    <Toolbar
-      sx={{
-        backgroundColor: '#4D81B7',
-      }}
-    >
-      <Typography
-        fontWeight="600"
-        color="white"
-        fontSize={18}
-        textTransform="uppercase"
-        fontFamily="Dosis"
-      >
-        Shopping List
-      </Typography>
-    </Toolbar>
-    <Container>
-      <ShoppingList />
-    </Container>
+    <SearchBar />
+    <ResultGrid />
   </>
 );
 

@@ -1,5 +1,12 @@
 # Company Search
 
+## Note
+
+You'll need a [MapBox](https://www.mapbox.com/) API key in a `.env` file, e.g.
+```
+MAPBOX_API_KEY="pk.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
 ## Tech Stack
 
 - NodeJs

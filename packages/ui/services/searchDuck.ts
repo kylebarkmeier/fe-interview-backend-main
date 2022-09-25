@@ -1,13 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+type SliceState = { search: string; showStarred: boolean };
+
 const searchSlice = createSlice({
   name: 'search',
-  initialState: '',
+  initialState: { search: '', showStarred: false } as SliceState,
   reducers: {
-    search: (state, action: PayloadAction<string>) => action.payload,
+    search: (state: SliceState, action: PayloadAction<string>) => {
+      state.search = action.payload;
+    },
+    showStarred: (state: SliceState, action: PayloadAction<boolean>) => ({
+      ...state,
+      showStarred: action.payload,
+    }),
   },
 });
 
-export const { search } = searchSlice.actions;
+export const { search, showStarred } = searchSlice.actions;
 
 export default searchSlice;

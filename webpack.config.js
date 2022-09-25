@@ -190,7 +190,7 @@ module.exports = function (_, webpackEnv) {
           background_color: '#ffffff',
         },
       }),
-      new FaviconsWebpackPlugin('packages/ui/assets/favicon.ico'),
+      new FaviconsWebpackPlugin('packages/ui/assets/favicon.svg'),
       new webpack.DefinePlugin({
         process: {
           env: {
@@ -200,6 +200,7 @@ module.exports = function (_, webpackEnv) {
         },
       }),
       new ESLintPlugin(),
+      isProduction && new MiniCssExtractPlugin(),
     ].filter(Boolean),
   };
 };

@@ -1,19 +1,43 @@
+import * as React from 'react';
 import {
+  Alert,
   CircularProgress,
   Container,
   Grid,
   Paper,
   Typography,
 } from '@mui/material';
-import { useAppSelector } from 'services/store';
+import {
+  isErrorWithMessage,
+  isFetchBaseQueryError,
+  useAppSelector,
+} from 'services/store';
 import { useCompaniesQuery } from 'services/queries';
 import { Company } from 'services/types';
 import CompanyItem from './Item';
+import { Error } from '@mui/icons-material';
 
 const ResultGrid = (): JSX.Element => {
-  const searchString = useAppSelector(({ search }) => search);
-  const companiesQuery = useCompaniesQuery({ q: searchString, _limit: 10 });
+  const { search: searchString, showStarred } = useAppSelector(
+    ({ search }) => search
+  );
+  const companiesQuery = useCompaniesQuery(
+    showStarred ? { starred: true } : { q: searchString || '', _limit: 10 }
+  );
   const isLoading = companiesQuery.isUninitialized || companiesQuery.isLoading;
+  const errorMessage = React.useMemo(() => {
+    let message = '';
+    if (companiesQuery.isError) {
+      const err = companiesQuery.error;
+      message = 'Unknown Error';
+      if (isFetchBaseQueryError(err)) {
+        message = 'error' in err ? err.error : JSON.stringify(err.data);
+      } else if (isErrorWithMessage(err)) {
+        message = err.message;
+      }
+    }
+    return message;
+  }, [companiesQuery.isError, companiesQuery.error]);
   return (
     <Container maxWidth="xl" component="main" sx={{ mt: 2 }}>
       <Typography variant="h5">Companies:</Typography>
@@ -33,8 +57,12 @@ const ResultGrid = (): JSX.Element => {
       >
         {isLoading ? (
           <CircularProgress size={128} />
+        ) : errorMessage ? (
+          <Alert role="error" severity="error" icon={<Error />} elevation={2}>
+            {errorMessage}
+          </Alert>
         ) : (
-          (companiesQuery.data || []).map((company: Company) => (
+          (companiesQuery.currentData || []).map((company: Company) => (
             <CompanyItem company={company} key={`company-${company.id}`} />
           ))
         )}

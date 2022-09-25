@@ -18,16 +18,23 @@ import MapBox from './MapBox';
 const TextWithIcon = ({
   icon,
   children,
+  component = 'section',
   ...props
 }: {
-  icon: React.ReactNode | Array<React.ReactNode>;
+  icon: React.ReactNode;
   children: React.ReactNode;
-}) => (
+  component?: React.ElementType;
+} & Pick<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  'target' | 'href' | 'onClick'
+>) => (
   <Grid
     container
     alignItems="center"
     wrap="nowrap"
     justifyContent="space-between"
+    component={component}
+    {...props}
   >
     {icon}
     <Grid
@@ -36,7 +43,6 @@ const TextWithIcon = ({
       direction="column"
       justifyContent="center"
       sx={{ ml: 1 }}
-      {...props}
     >
       {children}
     </Grid>
@@ -45,14 +51,19 @@ const TextWithIcon = ({
 
 const CompanyItem = ({ company }: { company: Company }): JSX.Element => {
   const [editCompany, editCompanyStatus] = useEditCompanyMutation();
+  const starred = React.useMemo(
+    () => (editCompanyStatus.data || company).starred,
+    [editCompanyStatus.data, company.starred]
+  );
 
   const handleStar = React.useCallback(
-    (event: Event) => {
+    (event: React.UIEvent) => {
       event.stopPropagation();
-      editCompany({ id: company.id, starred: !company.starred });
+      editCompany({ id: company.id, starred: !starred });
     },
-    [editCompany, company.id, company.starred]
+    [editCompany, company.id, starred]
   );
+
   return (
     <Card
       component="article"
@@ -65,6 +76,7 @@ const CompanyItem = ({ company }: { company: Company }): JSX.Element => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        cursor: 'pointer',
       }}
     >
       {company.image ? (
@@ -101,7 +113,7 @@ const CompanyItem = ({ company }: { company: Company }): JSX.Element => {
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
             Formatters.Address.full(company.address)
           )}`}
-          onClick={(event: Event) => event.stopPropagation()}
+          onClick={(event: React.UIEvent) => event.stopPropagation()}
         >
           <Typography>{company.address.address1}</Typography>
           <Typography>{company.address.address2}</Typography>
@@ -116,7 +128,7 @@ const CompanyItem = ({ company }: { company: Company }): JSX.Element => {
           startIcon={
             editCompanyStatus.isLoading ? (
               <CircularProgress size={24} />
-            ) : company.starred ? (
+            ) : starred ? (
               <Star />
             ) : (
               <StarOutline />
